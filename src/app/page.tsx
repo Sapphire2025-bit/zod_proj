@@ -9,7 +9,9 @@ const userSchema = z.object({
   email: z.string().email("invalid email"),
 });
 
-const validate = (userData) => {
+type UserData = z.infer<typeof userSchema>;
+
+const validate = (userData: UserData) => {
   try{
     const validUserData = userSchema.parse(userData);
     console.log("inputs are valid");
@@ -29,14 +31,16 @@ export default function Home() {
     const formData = new FormData(e.target);
 
     const birthDateString = formData.get("date");
-    const birthDate = birthDateString ? new Date(birthDateString) : null;
+    const birthDate = (typeof birthDateString === "string" && birthDateString)
+    ? new Date(birthDateString)
+    : null;
 
     const dataToValidate = {
-      id: formData.get("id"),
-      first_name: formData.get("first_name"),
-      last_name: formData.get("last_name"),
-      date: birthDate,
-      email: formData.get("email"),
+      id: (formData.get("id") as string) || "",
+      first_name: (formData.get("first_name") as string) || "",
+      last_name: (formData.get("last_name") as string) || "",
+      date: birthDate!,
+      email: (formData.get("email") as string) || "",
     };
     validate(dataToValidate);
   };
