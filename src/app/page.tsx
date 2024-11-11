@@ -26,9 +26,9 @@ const validate = (userData: UserData) => {
 export default function Home() {
   const inpStyle = "m-2 border-gray-300 border-2 rounded";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target as HTMLFormElement);
 
     const birthDateString = formData.get("date");
     const birthDate = (typeof birthDateString === "string" && birthDateString)
